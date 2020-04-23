@@ -1,0 +1,64 @@
+{
+  "variables": {
+    "vm_name": "centos7_base",
+    "guest_os_type": "RedHat_64",
+    "file": "http://ftp.pasteur.fr/mirrors/CentOS/7.7.1908/isos/x86_64/CentOS-7-x86_64-Minimal-1908.iso",
+    "checksum": "9a2c47d97b9975452f7d582264e9fc16d108ed8252ac6816239a3b58cef5c53d",
+    "checksum_type": "sha256",
+    "headless": "true"
+  },
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "vm_name": "{{ user `vm_name` }}",
+      "guest_os_type": "{{ user `guest_os_type` }}",
+      "iso_url": "{{ user `file` }}",
+      "iso_checksum": "{{ user `checksum` }}",
+      "iso_checksum_type": "{{ user `checksum_type` }}",
+      "headless": "{{ user `headless` }}",
+      "output_directory": "builds",
+      "disk_size": "10240",
+      "vboxmanage": [
+        ["modifyvm", "{{.Name}}", "--memory", "2048"],
+        ["modifyvm", "{{.Name}}", "--cpus", "2"],
+        ["modifyvm", "{{.Name}}", "--audio", "none"],
+        ["modifyvm", "{{.Name}}", "--usb", "off"]
+      ],
+      "boot_wait": "5s",
+      "boot_command": [
+        "<esc>",
+        "<wait>linux inst.ks=hd:/dev/fd0:ks.cfg<enter>"
+      ],
+      "floppy_files": [
+        "ks.cfg"
+      ],
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "600s",
+      "ssh_pty" : "true",
+      "guest_additions_path": "VBoxGuestAdditions.iso",
+      "shutdown_command": "echo 'vagrant'|sudo shutdown -P now"
+    }
+  ],
+  "provisioners": [
+    {
+      "only": ["virtualbox-iso"],
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | sudo -S sh '{{ .Path }}'",
+      "scripts": [
+        "scripts/set_ssh_config.sh",
+        "scripts/set_sudoers_config.sh",
+        "scripts/install_virtualbox_guest_additions.sh",
+        "scripts/update.sh",
+        "scripts/stamp.sh"
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "keep_input_artifact": true
+    }
+  ]
+}
