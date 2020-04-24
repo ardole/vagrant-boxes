@@ -20,10 +20,18 @@ GuestAdditions version installed is **6.1.4**
 
 ## User
 
-Main user is **vagrant** and he is **sudoer**.
+Main user is **tux** and he is **sudoer**.
 
 ## Vagrant sample
 
 ```
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "ardole/centos7"
+  config.vm.box_version = "0.1.0"
+  config.ssh.username = "tux"
+end
 
 ```
