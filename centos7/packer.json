@@ -32,20 +32,20 @@
       "floppy_files": [
         "ks.cfg"
       ],
-      "ssh_username": "vagrant",
-      "ssh_password": "vagrant",
+      "ssh_username": "tux",
+      "ssh_password": "tux",
       "ssh_port": 22,
       "ssh_wait_timeout": "600s",
       "ssh_pty" : "true",
       "guest_additions_path": "VBoxGuestAdditions.iso",
-      "shutdown_command": "echo 'vagrant'|sudo shutdown -P now"
+      "shutdown_command": "echo 'tux'|sudo shutdown -P now"
     }
   ],
   "provisioners": [
     {
       "only": ["virtualbox-iso"],
       "type": "shell",
-      "execute_command": "echo 'vagrant' | sudo -S sh '{{ .Path }}'",
+      "execute_command": "echo 'tux' | sudo -S sh '{{ .Path }}'",
       "scripts": [
         "scripts/set_ssh_config.sh",
         "scripts/set_sudoers_config.sh",

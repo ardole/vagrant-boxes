@@ -4,7 +4,6 @@ set -e
 
 cd sample
 
-vagrant up
-vagrant ssh
+vagrant destroy
 
 cd -
