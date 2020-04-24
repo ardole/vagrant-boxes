@@ -22,7 +22,7 @@ GuestAdditions version installed is **6.1.4**
 
 Main user is **tux** and he is **sudoer**.
 
-## Vagrant sample
+## Sample
 
 ```
 # -*- mode: ruby -*-
@@ -33,5 +33,4 @@ Vagrant.configure("2") do |config|
   config.vm.box_version = "0.1.0"
   config.ssh.username = "tux"
 end
-
 ```
